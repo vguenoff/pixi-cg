@@ -1,16 +1,15 @@
-import { Container, Graphics, DisplayObject } from 'pixi.js';
+import { Container, Graphics, DisplayObject, Text } from 'pixi.js';
 
 export default class Card extends DisplayObject {
-    protected view;
+    private view;
 
     constructor(
-        public game,
         public value: string,
         public x: number = 0,
         public y: number = 0,
         public width: number = 100,
         public height: number = 150,
-        protected flipped: boolean = false
+        private flipped: boolean = false
     ) {
         super();
         this.view = new Container();
@@ -34,18 +33,18 @@ export default class Card extends DisplayObject {
 
     flip(x: number, y: number) {
         const c = this.render();
-        const text = new PIXI.Text(this.value);
-        const tick = 0.03;
 
-        c.pivot.x = -c.width / 2;
+        const text = new Text(this.value);
+        const tick = 0.03;
+        const ticker = new PIXI.ticker.Ticker();
 
         text.x = this.width / 2.2;
         text.y = this.height / 2.2;
         text.anchor.set(0.5);
 
         if (c.scale.x < 0) {
-            this.game.ticker.add(d => {
-                c.scale.x += tick * d;
+            ticker.add(d => {
+                c.scale.x += tick;
                 c.x += tick * x;
                 c.y += tick * y;
 
@@ -54,9 +53,10 @@ export default class Card extends DisplayObject {
                 }
 
                 if (c.scale.x > 1) {
-                    this.game.ticker.stop();
+                    ticker.stop();
                 }
             });
+            ticker.start();
         }
     }
 }

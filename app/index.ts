@@ -3,30 +3,43 @@ import * as PIXI from 'pixi.js';
 import Card from './Card';
 import Deck from './Deck';
 
-const d = new Deck();
+class Game {
+    private game;
+    private deck: string[];
 
-const table = {
-    width: 800,
-    height: 600,
-    deck: d.cards,
-    deckCoordinates: {
-        x: 400,
-        y: 100,
-    },
-};
+    constructor(
+        private width: number = 800,
+        private height: number = 600,
+        private deckCoordinates = {
+            x: 450,
+            y: 100,
+        }
+    ) {
+        this.game = new PIXI.Application(this.width, this.height, {
+            backgroundColor: 0x1099bb,
+        });
+        document.body.appendChild(this.game.view);
 
-const game = new PIXI.Application(table.width, table.height, {
-    backgroundColor: 0x1099bb,
-});
+        this.deck = new Deck().cards;
+    }
 
-document.body.appendChild(game.view);
+    createDeck() {
+        this.deck.forEach((value, i) => {
+            const card = new Card(
+                value,
+                this.deckCoordinates.x,
+                this.deckCoordinates.y
+            );
 
-const c = new Card(
-    game,
-    'A♦',
-    table.deckCoordinates.x,
-    table.deckCoordinates.y
-);
+            const cc = card.render();
+            cc.interactive = true;
+            cc.buttonMode = true;
+            cc.on('pointerdown', () => card.flip(-100, 150));
 
-game.stage.addChild(c.render());
-c.flip(150, 150);
+            this.game.stage.addChild(cc);
+        });
+    }
+}
+
+const game = new Game();
+game.createDeck();
