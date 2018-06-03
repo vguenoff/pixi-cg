@@ -12,13 +12,14 @@ const table = [];
 
 deck.shuffle();
 
-let d = deck.render();
+const d = deck.render();
 d.interactive = true;
 d.buttonMode = true;
 d.on('pointerdown', onClick);
 
 function onClick() {
-    deck.deal();
+    const a = deck.deal();
+    app.stage.addChild(a);
 }
 
 app.stage.addChild(d);
