@@ -1,25 +1,31 @@
 import * as PIXI from 'pixi.js';
 
-import Deck from './Deck';
+import Card from './Card';
+// import Deck from './Deck';
 
-import { loop } from './utils';
+// import { loop } from './utils';
 
 const app = new PIXI.Application(800, 600, { backgroundColor: 0x1099bb });
 document.body.appendChild(app.view);
 
-const deck = new Deck();
-const table = [];
+const c = new Card(app, 'A♦', 100, 100);
 
-deck.shuffle();
+app.stage.addChild(c.render());
+c.flip();
 
-const d = deck.render();
-d.interactive = true;
-d.buttonMode = true;
-d.on('pointerdown', onClick);
+// const deck = new Deck();
+// const table = [];
 
-function onClick() {
-    const a = deck.deal();
-    app.stage.addChild(a);
-}
+// deck.shuffle();
 
-app.stage.addChild(d);
+// const d = deck.render();
+// d.interactive = true;
+// d.buttonMode = true;
+// d.on('pointerdown', onClick);
+
+// function onClick() {
+//     const a = deck.deal();
+//     app.stage.addChild(a);
+// }
+
+// app.stage.addChild(d);
