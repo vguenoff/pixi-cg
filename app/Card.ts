@@ -19,7 +19,7 @@ export default class Card extends DisplayObject {
         this.view.scale.x = -1;
 
         const graphics = new Graphics();
-        graphics.lineStyle(10, 0xffcc00, 0.3);
+        graphics.lineStyle(5, 0xffcc00, 1);
         graphics.beginFill(0xfffcf2, 1);
         graphics.drawRoundedRect(0, 0, this.width, this.height, 10);
         graphics.endFill();
@@ -27,20 +27,21 @@ export default class Card extends DisplayObject {
         this.view.addChild(graphics);
     }
 
-    render() {
-        return this.view;
+    setCardValue() {
+        const cardValue = new Text(this.value);
+
+        cardValue.x = this.width / 2.2;
+        cardValue.y = this.height / 2.2;
+        cardValue.anchor.set(0.5);
+
+        return cardValue;
     }
 
     flip(x: number, y: number) {
         const c = this.render();
-
-        const text = new Text(this.value);
-        const tick = 0.03;
         const ticker = new PIXI.ticker.Ticker();
-
-        text.x = this.width / 2.2;
-        text.y = this.height / 2.2;
-        text.anchor.set(0.5);
+        const tick = 0.03;
+        const cardValue = this.setCardValue();
 
         if (c.scale.x < 0) {
             ticker.add(d => {
@@ -49,14 +50,21 @@ export default class Card extends DisplayObject {
                 c.y += tick * y;
 
                 if (c.scale.x > 0) {
-                    c.addChild(text);
+                    c.addChild(cardValue);
                 }
 
                 if (c.scale.x > 1) {
                     ticker.stop();
                 }
             });
+
             ticker.start();
         }
+
+        return this.view;
+    }
+
+    render() {
+        return this.view;
     }
 }
