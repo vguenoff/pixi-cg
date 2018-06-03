@@ -4,7 +4,7 @@ export default class Card extends DisplayObject {
     protected view;
 
     constructor(
-        public app,
+        public game,
         public value: string,
         public x: number = 0,
         public y: number = 0,
@@ -32,26 +32,29 @@ export default class Card extends DisplayObject {
         return this.view;
     }
 
-    flip() {
+    flip(x: number, y: number) {
         const c = this.render();
+        const text = new PIXI.Text(this.value);
+        const tick = 0.03;
+
         c.pivot.x = -c.width / 2;
 
-        // add the text
-        const text = new PIXI.Text(this.value);
         text.x = this.width / 2.2;
         text.y = this.height / 2.2;
         text.anchor.set(0.5);
 
         if (c.scale.x < 0) {
-            this.app.ticker.add(d => {
-                c.scale.x += 0.01 * d;
+            this.game.ticker.add(d => {
+                c.scale.x += tick * d;
+                c.x += tick * x;
+                c.y += tick * y;
 
                 if (c.scale.x > 0) {
                     c.addChild(text);
                 }
 
                 if (c.scale.x > 1) {
-                    this.app.ticker.stop();
+                    this.game.ticker.stop();
                 }
             });
         }
