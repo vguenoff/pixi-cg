@@ -28,10 +28,18 @@ export default class Card extends DisplayObject {
     }
 
     setCardValue() {
-        const cardValue = new Text(this.value);
+        const fill =
+            this.value.indexOf('♦') !== -1 || this.value.indexOf('♥') !== -1
+                ? '#ff0000'
+                : '#000';
 
-        cardValue.x = this.width / 2.2;
-        cardValue.y = this.height / 2.2;
+        const cardValue = new Text(this.value, {
+            fontSize: 40,
+            fill,
+        });
+
+        cardValue.x = this.width / 2;
+        cardValue.y = this.height / 2;
         cardValue.anchor.set(0.5);
 
         return cardValue;
