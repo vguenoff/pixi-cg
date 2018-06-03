@@ -96,7 +96,10 @@ class Game {
         if (this.deckContainer.children.length === 0) {
             this.drawButtonActive = false;
             game.drawButton();
-            this.playAgain();
+
+            setTimeout(() => {
+                this.playAgain();
+            }, 1150);
         }
     };
 
