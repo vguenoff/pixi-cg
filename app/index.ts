@@ -91,18 +91,23 @@ class Game {
         button.on('pointerdown', () => {
             if (this.dealtCardsContainer.children.length === 4) {
                 this.dealtCardsContainer.children = [];
-            } else {
-                this.renderedDeckContainer.children.pop();
-                const card = this.deckContainer.children.pop();
+            }
 
-                this.dealtCardsContainer.addChild(
-                    card.flip(
-                        this.dealtCardsContainer.children.length * 40 - 110,
-                        130
-                    )
-                );
+            this.renderedDeckContainer.children.pop();
+            const card = this.deckContainer.children.pop();
 
-                this.game.stage.addChild(this.dealtCardsContainer);
+            this.dealtCardsContainer.addChild(
+                card.flip(
+                    this.dealtCardsContainer.children.length * 40 - 110,
+                    130
+                )
+            );
+
+            this.game.stage.addChild(this.dealtCardsContainer);
+
+            if (this.deckContainer.children.length === 0) {
+                console.log('new game');
+                game.createDeck();
             }
         });
     }
